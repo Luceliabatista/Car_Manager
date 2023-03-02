@@ -33,12 +33,12 @@ export const DrawerProvider: React.FC<IDrawerProviderProps> = ({
     setIsDrawerOpen((oldDrawerOpen) => !oldDrawerOpen);
   }, []);
 
-//   const handleSetDrawerOpen = useCallback(
-//     (newDrawerOptions: IDrawerOption[]) => {
-//       setDrawerOptions(newDrawerOptions);
-//     },
-//     []
-//   );
+  const handleSetDrawerOpen = useCallback(
+    (newDrawerOptions: IDrawerOption[]) => {
+      setDrawerOptions(newDrawerOptions);
+    },
+    []
+  );
 
   return (
     <DrawerContext.Provider
@@ -46,8 +46,7 @@ export const DrawerProvider: React.FC<IDrawerProviderProps> = ({
         isDrawerOpen,
         drawerOptions,
         toggleDrawerOpen,
-        setDrawerOptions,
-        // handleSetDrawerOpen,
+        setDrawerOptions: handleSetDrawerOpen,
       }}
     >
       {children}
