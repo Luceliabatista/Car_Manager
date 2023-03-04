@@ -1,28 +1,27 @@
 import { Environment } from "../../environment";
 import { Api } from "../api/axios-config";
 
-export interface IListagemCategoria {
-  id: number;
-  nome: string;
-}
-
 export interface IDetalheCategoria {
   id: number;
-  nome: string;
+  allowQuantityVariation?: boolean;
+  description: string;
+  hasShipping?: boolean;
+  limitRequest: number;
+  limitRequestsPerMonth?: boolean;
+  name: string;
+  validateClient?: boolean;
+  valueVariation: number;
+  allowValueVariation?: boolean;
 }
 
 type TCategoriasComTotalCount = {
-  data: IListagemCategoria[];
+  data: IDetalheCategoria[];
   totalCount: number;
 };
 
-const getAll = async (
-  page = 1,
-  filter = "",
-  id = ""
-): Promise<TCategoriasComTotalCount | Error> => {
+const getAll = async (): Promise<TCategoriasComTotalCount | Error> => {
   try {
-    const urlRelativa = `/categorias?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&nome_like=${filter}&id_like=${id}`;
+    const urlRelativa = `/ProductCategory`;
 
     const { data, headers } = await Api.get(urlRelativa);
 
@@ -44,28 +43,14 @@ const getAll = async (
   }
 };
 
-const getById = async (id: number): Promise<IDetalheCategoria | Error> => {
-  try {
-    const { data } = await Api.get(`/categorias/${id}`);
-
-    if (data) {
-      return data;
-    }
-
-    return new Error("Erro ao consultar o registro.");
-  } catch (error) {
-    console.error(error);
-    return new Error(
-      (error as { message: string }).message || "Erro ao consultar o registro."
-    );
-  }
-};
-
 const create = async (
   dados: Omit<IDetalheCategoria, "id">
 ): Promise<number | Error> => {
   try {
-    const { data } = await Api.post<IDetalheCategoria>("/Categorias", dados);
+    const { data } = await Api.post<IDetalheCategoria>(
+      "/ProductCategory",
+      dados
+    );
 
     if (data) {
       return data.id;
@@ -85,7 +70,7 @@ const updateById = async (
   dados: IDetalheCategoria
 ): Promise<void | Error> => {
   try {
-    await Api.put(`/categorias/${id}`, dados);
+    await Api.put(`/ProductCategory/${id}`, dados);
   } catch (error) {
     console.error(error);
     return new Error(
@@ -96,7 +81,7 @@ const updateById = async (
 
 const deleteById = async (id: number): Promise<void | Error> => {
   try {
-    await Api.delete(`/categorias/${id}`);
+    await Api.delete(`/ProductCategory/${id}`);
   } catch (error) {
     console.error(error);
     return new Error(
@@ -108,7 +93,6 @@ const deleteById = async (id: number): Promise<void | Error> => {
 export const CategoriasService = {
   getAll,
   create,
-  getById,
   updateById,
   deleteById,
 };

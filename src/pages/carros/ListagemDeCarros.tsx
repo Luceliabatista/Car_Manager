@@ -61,7 +61,7 @@ export const ListagemDeCarros: React.FC = () => {
   }, [busca, pagina]);
 
   const handleDelete = (id: number) => {
-    if (/*confirm*/ "Realmente deseja apagar?") {
+    if (/*confirm*/("Realmente deseja apagar?")) {
       CarrosServices.deleteById(id).then((result) => {
         if (result instanceof Error) {
           alert(result.message);
@@ -99,8 +99,8 @@ export const ListagemDeCarros: React.FC = () => {
           <TableHead>
             <TableRow>
               <TableCell width={100}>Ações</TableCell>
-              <TableCell>Nome completo</TableCell>
-              <TableCell>Email</TableCell>
+              <TableCell>Nome</TableCell>
+              <TableCell>Categoria</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -117,8 +117,8 @@ export const ListagemDeCarros: React.FC = () => {
                     <Icon>edit</Icon>
                   </IconButton>
                 </TableCell>
-                {/* <TableCell>{row.nomeCompleto}</TableCell>
-                <TableCell>{row.email}</TableCell> */}
+                <TableCell>{row.name}</TableCell>
+                <TableCell>{row.categoryId}</TableCell>
               </TableRow>
             ))}
           </TableBody>

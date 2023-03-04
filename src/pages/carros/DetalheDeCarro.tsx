@@ -9,14 +9,28 @@ import { FerramentasDeDetalhe } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 
 interface IFormData {
-  email: string;
-  cidadeId: number;
-  nomeCompleto: string;
+  id: number;
+  categoryId: number;
+  description: string;
+  icmsTax: number;
+  ipiTax: number;
+  isAvailable: boolean;
+  isWarehouse: boolean;
+  minPuchaseQuantity: number;
+  name: string;
+  productCategory: string;
 }
 const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
-  cidadeId: yup.number().required(),
-  email: yup.string().required().email(),
-  nomeCompleto: yup.string().required().min(3),
+  id: yup.number().required(),
+  categoryId: yup.number().required(),
+  name: yup.string().required().min(3),
+  description: yup.string().required(),
+  icmsTax: yup.number().required(),
+  ipiTax: yup.number().required(),
+  isAvailable: yup.boolean().required(),
+  isWarehouse: yup.boolean().required(),
+  minPuchaseQuantity: yup.number().required(),
+  productCategory: yup.string().required(),
 });
 
 export const DetalheDeCarros: React.FC = () => {
@@ -25,7 +39,7 @@ export const DetalheDeCarros: React.FC = () => {
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [nome, setNome] = useState("");
+  const [name, setname] = useState("");
 
   useEffect(() => {
     if (id !== "nova") {
@@ -38,15 +52,15 @@ export const DetalheDeCarros: React.FC = () => {
           alert(result.message);
           navigate("/carros");
         } else {
-          //   setNome(result.nomeCompleto);
+          setname(result.name);
           formRef.current?.setData(result);
         }
       });
     } else {
       formRef.current?.setData({
-        email: "",
-        nomeCompleto: "",
-        cidadeId: undefined,
+        name: "",
+        categoryId: "",
+        description: "",
       });
     }
   }, [id]);
@@ -73,7 +87,6 @@ export const DetalheDeCarros: React.FC = () => {
           });
         } else {
           CarrosServices.updateById(Number(id), {
-            id: Number(id),
             ...dadosValidados,
           }).then((result) => {
             setIsLoading(false);
@@ -116,7 +129,7 @@ export const DetalheDeCarros: React.FC = () => {
 
   return (
     <LayoutBaseDePagina
-      titulo={id === "nova" ? "Novo Carro" : nome}
+      titulo={id === "nova" ? "Novo Carro" : name}
       barraDeFerramentas={
         <FerramentasDeDetalhe
           textoBotaoNovo="Nova"
@@ -154,10 +167,10 @@ export const DetalheDeCarros: React.FC = () => {
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VTextField
                   fullWidth
-                  name="nomeCompleto"
+                  name="nameCompleto"
                   disabled={isLoading}
-                  label="Nome completo"
-                  onChange={(e) => setNome(e.target.value)}
+                  label="name completo"
+                  onChange={(e) => setname(e.target.value)}
                 />
               </Grid>
             </Grid>

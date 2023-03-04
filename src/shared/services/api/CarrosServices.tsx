@@ -3,16 +3,28 @@ import { Api } from "../api/axios-config";
 
 export interface IListagemCarros {
   id: number;
-  //   email: string;
-  //   cidadeId: number;
-  //   nomeCompleto: string;
+  categoryId: number;
+  description: string;
+  icmsTax: number;
+  ipiTax: number;
+  isAvailable: boolean;
+  isWarehouse: boolean;
+  minPuchaseQuantity: number;
+  name: string;
+  productCategory: string;
 }
 
 export interface IDetalheCarro {
   id: number;
-  //   email: string;
-  //   cidadeId: number;
-  //   nomeCompleto: string;
+  categoryId: number;
+  description: string;
+  icmsTax: number;
+  ipiTax: number;
+  isAvailable: boolean;
+  isWarehouse: boolean;
+  minPuchaseQuantity: number;
+  name: string;
+  productCategory: string;
 }
 
 type TCarrosComTotalCount = {
@@ -25,7 +37,7 @@ const getAll = async (
   filter = ""
 ): Promise<TCarrosComTotalCount | Error> => {
   try {
-    const urlRelativa = `/carros?_page=${page}&_limit=${Environment.LIMITE_DE_LINHAS}&nomeCompleto_like=${filter}`;
+    const urlRelativa = `/Product`;
 
     const { data, headers } = await Api.get(urlRelativa);
 

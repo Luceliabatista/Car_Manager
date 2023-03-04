@@ -15,8 +15,10 @@ import {
 } from "@mui/material";
 import { useNavigate, useSearchParams } from "react-router-dom";
 
-import { IListagemCarros } from "../../shared/services/api/CarrosServices";
-import { CategoriasService } from "../../shared/services/api/CategoriasServices";
+import {
+  CategoriasService,
+  IDetalheCategoria,
+} from "../../shared/services/api/CategoriasServices";
 import { FerramentasDaListagem } from "../../shared/components/ferramentas-da-listagem/FerramentasDaListagem";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { Environment } from "../../shared/environment";
@@ -27,7 +29,7 @@ export const ListagemDeCategorias: React.FC = () => {
   const { debounce } = useDebounce();
   const navigate = useNavigate();
 
-  const [rows, setRows] = useState<IListagemCarros[]>([]);
+  const [rows, setRows] = useState<IDetalheCategoria[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
 
@@ -43,7 +45,7 @@ export const ListagemDeCategorias: React.FC = () => {
     setIsLoading(true);
 
     debounce(() => {
-      CategoriasService.getAll(pagina, busca).then((result) => {
+      CategoriasService.getAll().then((result) => {
         setIsLoading(false);
 
         if (result instanceof Error) {
@@ -56,7 +58,7 @@ export const ListagemDeCategorias: React.FC = () => {
         }
       });
     });
-  }, [busca, pagina]);
+  }, []);
 
   const handleDelete = (id: number) => {
     if (/*confirm*/ "Realmente deseja apagar?") {
@@ -81,7 +83,7 @@ export const ListagemDeCategorias: React.FC = () => {
           mostrarInputBusca
           textoDaBusca={busca}
           textoBotaoNovo="Nova"
-          aoClicarEmNovo={() => navigate("/Categorias/detalhe/nova")}
+          aoClicarEmNovo={() => navigate("/categorias/detalhe/nova")}
           aoMudarTextoDeBusca={(texto) =>
             setSearchParams({ busca: texto, pagina: "1" }, { replace: true })
           }
@@ -101,22 +103,31 @@ export const ListagemDeCategorias: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>
-                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
-                    <Icon>delete</Icon>
-                  </IconButton>
-                  <IconButton
-                    size="small"
-                    onClick={() => navigate(`/Categorias/detalhe/${row.id}`)}
-                  >
-                    <Icon>edit</Icon>
-                  </IconButton>
-                </TableCell>
-                {/* <TableCell>{row}</TableCell> */}
-              </TableRow>
-            ))}
+            {rows
+              .filter((item) => item.name.includes(busca))
+              .map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDelete(row.id)}
+                    >
+                      <Icon>delete</Icon>
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={() =>
+                        navigate(`/categorias/detalhe/${row.id}`, {
+                          state: row,
+                        })
+                      }
+                    >
+                      <Icon>edit</Icon>
+                    </IconButton>
+                  </TableCell>
+                  <TableCell>{row.name}</TableCell>
+                </TableRow>
+              ))}
           </TableBody>
 
           {totalCount === 0 && !isLoading && (
