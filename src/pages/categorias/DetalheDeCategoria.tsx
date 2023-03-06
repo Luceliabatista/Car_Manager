@@ -20,7 +20,7 @@ interface IFormData {
   validateClient?: boolean;
   allowValueVariation?: boolean;
 }
-const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
+export const formValidationSchema: yup.Schema<IFormData> = yup.object().shape({
   name: yup.string().required("Campo obrigatório.").min(3),
   allowQuantityVariation: yup.boolean(),
   description: yup.string().required("Campo obrigatório."),
@@ -57,6 +57,7 @@ export const DetalheDeCategorias: React.FC = () => {
       .validate(dados, { abortEarly: false })
       .then((dadosValidados) => {
         setIsLoading(true);
+
         if (id === "nova") {
           CategoriasService.create(dadosValidados).then((result) => {
             setIsLoading(false);
@@ -98,7 +99,8 @@ export const DetalheDeCategorias: React.FC = () => {
   };
 
   const handleDelete = (id: number) => {
-    if (/*confirm*/ "Realmente deseja apagar?") {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Realmente deseja apagar?")) {
       CategoriasService.deleteById(id).then((result) => {
         if (result instanceof Error) {
           alert(result.message);
@@ -151,7 +153,7 @@ export const DetalheDeCategorias: React.FC = () => {
                 <VTextField
                   fullWidth
                   name="name"
-                  label="name"
+                  label="Nome"
                   disabled={isLoading}
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -160,9 +162,8 @@ export const DetalheDeCategorias: React.FC = () => {
                 <VTextField
                   fullWidth
                   name="description"
-                  label="description"
+                  label="Descrição"
                   disabled={isLoading}
-                  // onChange={(e) => setDescription(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
@@ -170,9 +171,8 @@ export const DetalheDeCategorias: React.FC = () => {
                   fullWidth
                   type="number"
                   name="limitRequest"
-                  label="limitRequest"
+                  label="Quantidade mínima de requisição"
                   disabled={isLoading}
-                  // onChange={(e) => setLimitRequest(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
@@ -180,49 +180,43 @@ export const DetalheDeCategorias: React.FC = () => {
                   fullWidth
                   type="number"
                   name="valueVariation"
-                  label="valueVariation"
+                  label="Variação de valor"
                   disabled={isLoading}
-                  // onChange={(e) => setValueVariation(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VCheckbox
-                  label="allowQuantityVariation"
                   name="allowQuantityVariation"
+                  label="Permitir Quantidade Variação"
                   disabled={isLoading}
-                  // onChange={(e) => setAllowQuantityVariation(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VCheckbox
-                  label="hasShipping"
                   name="hasShipping"
+                  label="Frete"
                   disabled={isLoading}
-                  // onChange={(e) => setHasShipping(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VCheckbox
-                  label="limitRequestsPerMonth"
                   name="limitRequestsPerMonth"
+                  label="Limite de requisição mensal"
                   disabled={isLoading}
-                  // onChange={(e) => setLimitRequestsPerMonth(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VCheckbox
-                  label="validateClient"
                   name="validateClient"
+                  label="Validar Cliente"
                   disabled={isLoading}
-                  // onChange={(e) => setValidateClient(e.target.value)}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
                 <VCheckbox
-                  label="allowValueVariation"
                   name="allowValueVariation"
+                  label="Permitir variação de valor"
                   disabled={isLoading}
-                  // onChange={(e) => setAllowValueVariation(e.target.value)}
                 />
               </Grid>
             </Grid>

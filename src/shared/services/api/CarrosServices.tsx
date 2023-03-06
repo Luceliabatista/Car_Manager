@@ -1,18 +1,6 @@
 import { Environment } from "../../environment";
 import { Api } from "../api/axios-config";
-
-export interface IListagemCarros {
-  id: number;
-  categoryId: number;
-  description: string;
-  icmsTax: number;
-  ipiTax: number;
-  isAvailable: boolean;
-  isWarehouse: boolean;
-  minPuchaseQuantity: number;
-  name: string;
-  productCategory: string;
-}
+import { IDetalheCategoria } from "./CategoriasServices";
 
 export interface IDetalheCarro {
   id: number;
@@ -20,22 +8,21 @@ export interface IDetalheCarro {
   description: string;
   icmsTax: number;
   ipiTax: number;
-  isAvailable: boolean;
-  isWarehouse: boolean;
+  isAvailable?: boolean;
+  isWarehouse?: boolean;
   minPuchaseQuantity: number;
   name: string;
-  productCategory: string;
+  productCategory: {
+    name: string;
+  };
 }
 
 type TCarrosComTotalCount = {
-  data: IListagemCarros[];
+  data: IDetalheCarro[];
   totalCount: number;
 };
 
-const getAll = async (
-  page = 1,
-  filter = ""
-): Promise<TCarrosComTotalCount | Error> => {
+const getAll = async (): Promise<TCarrosComTotalCount | Error> => {
   try {
     const urlRelativa = `/Product`;
 
@@ -59,28 +46,11 @@ const getAll = async (
   }
 };
 
-const getById = async (id: number): Promise<IDetalheCarro | Error> => {
-  try {
-    const { data } = await Api.get(`/carros/${id}`);
-
-    if (data) {
-      return data;
-    }
-
-    return new Error("Erro ao consultar o registro.");
-  } catch (error) {
-    console.error(error);
-    return new Error(
-      (error as { message: string }).message || "Erro ao consultar o registro."
-    );
-  }
-};
-
 const create = async (
   dados: Omit<IDetalheCarro, "id">
 ): Promise<number | Error> => {
   try {
-    const { data } = await Api.post<IDetalheCarro>("/carros", dados);
+    const { data } = await Api.post<IDetalheCarro>("/Product", dados);
 
     if (data) {
       return data.id;
@@ -100,7 +70,7 @@ const updateById = async (
   dados: IDetalheCarro
 ): Promise<void | Error> => {
   try {
-    await Api.put(`/carros/${id}`, dados);
+    await Api.put(`/Product/${id}`, dados);
   } catch (error) {
     console.error(error);
     return new Error(
@@ -111,7 +81,7 @@ const updateById = async (
 
 const deleteById = async (id: number): Promise<void | Error> => {
   try {
-    await Api.delete(`/carros/${id}`);
+    await Api.delete(`/Product/${id}`);
   } catch (error) {
     console.error(error);
     return new Error(
@@ -123,7 +93,6 @@ const deleteById = async (id: number): Promise<void | Error> => {
 export const CarrosServices = {
   getAll,
   create,
-  getById,
   updateById,
   deleteById,
 };

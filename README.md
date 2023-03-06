@@ -1,46 +1,84 @@
-# Getting Started with Create React App
+<h1 align="center">Plataforma de CRUDs para gerenciamente de Carros e suas Categorias</h1>
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<h4 align="center"> 
+	🚧  Status da aplicação: Finalizada 🚧
+</h4>
+<br />
+<ul>
+<h2>Utilizei nesta aplicação:</h2>
 
-## Available Scripts
+<li>TypeScript</li>
+<li>React</li>
+<li>HTML 5</li>
+<li>CSS 3</li>
+<li>React-router-dom</li>
+<li>MUI</li>
+<li>Yup</li>
+<li>Axios</li>
+<li>Unform</li>
 
-In the project directory, you can run:
+</ul>
 
-### `npm start`
+## Descrição do Projeto
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<h5>Regras e funcionalidades</h5>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<p align="center">
 
-### `npm test`
+<ul>
+<h2>Projeto desenvolvido para realizar o CRUD de:</h2>
+ <li>Categorias, para posteriores utilizaçoes nos produtos.</li>
+ <li>Carros, os associando obrigatóriamente a uma das Categorias existentes.</li>
+</ul>
+</p>
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Inicialização do Projeto
 
-### `npm run build`
+<strong>API
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+API externa utilizada: http://200.169.68.106:9991/swagger/index.html </strong>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+<strong>Instalação
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Criado utilizando React através do CRA.</strong>
 
-### `npm run eject`
+// Instalando bibliotecas
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+```
+yarn install
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+ou
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+npm install
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+```
 
-## Learn More
+// Iniciando o projeto
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+yarn start
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+ou
+
+npm start
+
+```
+
+<br>
+<br>
+
+ <h2>Feito por Lucélia Batista 🚀 </h2>
+  <img style="heigth: 200px; width: 200px" src="https://avatars.githubusercontent.com/u/86496770?v=4">
+ <a href="https://www.linkedin.com/in/luceliabatista/"></a>
+
+<br />
+<br />
+
+Contatos:
+
+[![Linkedin Badge](https://img.shields.io/badge/-Lucelia-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/luceliabatista/)](https://www.linkedin.com/in/luceliabatista/)
+[![Gmail Badge](https://img.shields.io/badge/-lucelia.dev@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:lucelia.dev@gmail.com)](mailto:lucelia.dev@gmail.com)
+
+```
+
+```

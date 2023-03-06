@@ -19,7 +19,7 @@ import {
   CategoriasService,
   IDetalheCategoria,
 } from "../../shared/services/api/CategoriasServices";
-import { FerramentasDaListagem } from "../../shared/components/ferramentas-da-listagem/FerramentasDaListagem";
+import { FerramentasDaListagem } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { Environment } from "../../shared/environment";
 import { useDebounce } from "../../shared/hooks";
@@ -51,8 +51,6 @@ export const ListagemDeCategorias: React.FC = () => {
         if (result instanceof Error) {
           alert(result.message);
         } else {
-          console.log(result);
-
           setTotalCount(result.totalCount);
           setRows(result.data);
         }
@@ -61,7 +59,8 @@ export const ListagemDeCategorias: React.FC = () => {
   }, []);
 
   const handleDelete = (id: number) => {
-    if (/*confirm*/ "Realmente deseja apagar?") {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Realmente deseja apagar?")) {
       CategoriasService.deleteById(id).then((result) => {
         if (result instanceof Error) {
           alert(result.message);

@@ -16,20 +16,24 @@ import {
 import { useNavigate, useSearchParams } from "react-router-dom";
 
 import {
-  IListagemCarros,
+  IDetalheCarro,
   CarrosServices,
 } from "../../shared/services/api/CarrosServices";
 import { FerramentasDaListagem } from "../../shared/components";
 import { LayoutBaseDePagina } from "../../shared/layouts";
 import { useDebounce } from "../../shared/hooks";
 import { Environment } from "../../shared/environment";
+import {
+  CategoriasService,
+  IDetalheCategoria,
+} from "../../shared/services/api/CategoriasServices";
 
 export const ListagemDeCarros: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const { debounce } = useDebounce();
   const navigate = useNavigate();
 
-  const [rows, setRows] = useState<IListagemCarros[]>([]);
+  const [rows, setRows] = useState<IDetalheCarro[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [totalCount, setTotalCount] = useState(0);
 
@@ -45,23 +49,41 @@ export const ListagemDeCarros: React.FC = () => {
     setIsLoading(true);
 
     debounce(() => {
-      CarrosServices.getAll(pagina, busca).then((result) => {
-        setIsLoading(false);
-
-        if (result instanceof Error) {
-          alert(result.message);
+      CategoriasService.getAll().then((categories) => {
+        if (categories instanceof Error) {
+          alert(categories.message);
         } else {
-          console.log(result);
+          CarrosServices.getAll().then((response) => {
+            setIsLoading(false);
 
-          setTotalCount(result.totalCount);
-          setRows(result.data);
+            if (response instanceof Error) {
+              alert(response.message);
+            } else {
+              const cars = response.data.map((car) => {
+                const productCategory = categories.data.find(
+                  (category) => car.categoryId === category.id
+                );
+
+                return {
+                  ...car,
+                  productCategory: {
+                    name: productCategory?.name || "",
+                  },
+                };
+              });
+
+              setTotalCount(response.totalCount);
+              setRows(cars);
+            }
+          });
         }
       });
     });
   }, [busca, pagina]);
 
   const handleDelete = (id: number) => {
-    if (/*confirm*/("Realmente deseja apagar?")) {
+    // eslint-disable-next-line no-restricted-globals
+    if (confirm("Realmente deseja apagar?")) {
       CarrosServices.deleteById(id).then((result) => {
         if (result instanceof Error) {
           alert(result.message);
@@ -104,23 +126,32 @@ export const ListagemDeCarros: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.id}>
-                <TableCell>
-                  <IconButton size="small" onClick={() => handleDelete(row.id)}>
-                    <Icon>delete</Icon>
-                  </IconButton>
-                  <IconButton
-                    size="small"
-                    onClick={() => navigate(`/carros/detalhe/${row.id}`)}
-                  >
-                    <Icon>edit</Icon>
-                  </IconButton>
-                </TableCell>
-                <TableCell>{row.name}</TableCell>
-                <TableCell>{row.categoryId}</TableCell>
-              </TableRow>
-            ))}
+            {rows
+              .filter((item) => item.name.includes(busca))
+              .map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDelete(row.id)}
+                    >
+                      <Icon>delete</Icon>
+                    </IconButton>
+                    <IconButton
+                      size="small"
+                      onClick={() =>
+                        navigate(`/carros/detalhe/${row.id}`, {
+                          state: row,
+                        })
+                      }
+                    >
+                      <Icon>edit</Icon>
+                    </IconButton>
+                  </TableCell>
+                  <TableCell>{row.name}</TableCell>
+                  <TableCell>{row.productCategory.name}</TableCell>
+                </TableRow>
+              ))}
           </TableBody>
 
           {totalCount === 0 && !isLoading && (
